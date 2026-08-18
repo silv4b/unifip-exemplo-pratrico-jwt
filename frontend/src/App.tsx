@@ -178,16 +178,27 @@ function App() {
                 />
               </div>
               <div className="flex gap-2">
-                <Button onClick={gerarToken} className="w-full">
+                <Button onClick={gerarToken} className="flex-1">
                   Gerar Token
                 </Button>
                 <Button
                   variant="outline"
+                  className="flex-1"
                   onClick={() => {
-                    setUsuario("Bruno Silva")
-                    setEmail("bruno@exemplo.com")
+                    setUsuario("")
+                    setEmail("")
                     setTokenGerado("")
                     setPayloadGerado(null)
+                    setTokenValidar("")
+                    setResultadoValidacao(null)
+                    setTokenDecodificar("")
+                    setResultadoDecodificacao(null)
+                    setTokenAtaque("")
+                    setPayloadModificado("")
+                    setResultadoAtaque(null)
+                    setTokenVulneravel("")
+                    setPayloadModificadoVulneravel("")
+                    setResultadoVulneravel(null)
                   }}
                 >
                   Limpar
