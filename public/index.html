@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exemplo JWT - Aula</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h1 {
+      color: white;
+      text-align: center;
+      margin-bottom: 30px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    .card h2 {
+      color: #667eea;
+      margin-bottom: 20px;
+      font-size: 1.3rem;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 10px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #555;
+      font-weight: 500;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border-color 0.3s;
+    }
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+    textarea {
+      font-family: 'Courier New', monospace;
+      resize: vertical;
+      min-height: 120px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    .btn-success {
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      color: white;
+    }
+    .btn-info {
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      color: white;
+    }
+    .btn-danger {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      color: white;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      background: #f8f9fa;
+      border-left: 4px solid #667eea;
+    }
+    .result.success {
+      border-left-color: #38ef7d;
+      background: #d4edda;
+    }
+    .result.error {
+      border-left-color: #f5576c;
+      background: #f8d7da;
+    }
+    .result h3 {
+      margin-bottom: 10px;
+      color: #333;
+      font-size: 1rem;
+    }
+    .result h4 {
+      margin-top: 15px;
+      margin-bottom: 8px;
+      color: #555;
+      font-size: 0.9rem;
+    }
+    .result p {
+      margin-top: 12px;
+      margin-bottom: 6px;
+      color: #444;
+      font-size: 0.9rem;
+    }
+    .result p:first-child {
+      margin-top: 0;
+    }
+    .result pre {
+      background: #2d3748;
+      color: #e2e8f0;
+      padding: 12px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 12px;
+      white-space: pre-wrap;
+      word-break: break-all;
+      margin-top: 8px;
+    }
+    .token-display {
+      background: #1a202c;
+      color: #48bb78;
+      padding: 12px;
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      word-break: break-all;
+      margin-top: 10px;
+      line-height: 1.4;
+    }
+    .btn-copiar {
+      display: inline-block;
+      margin-top: 10px;
+      background: #48bb78;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      width: auto;
+    }
+    .btn-copiar:hover {
+      background: #38a169;
+      transform: translateY(-1px);
+    }
+    .alerta-aviso {
+      margin-top: 15px;
+      padding: 10px 12px;
+      background: #f8d7da;
+      border-radius: 6px;
+      color: #721c24;
+      font-size: 0.85rem;
+    }
+    .info-box {
+      background: #ebf8ff;
+      border: 1px solid #90cdf4;
+      border-radius: 8px;
+      padding: 15px;
+      margin-top: 20px;
+    }
+    .info-box h4 {
+      color: #2b6cb0;
+      margin-bottom: 10px;
+    }
+    .info-box ul {
+      margin-left: 20px;
+      color: #4a5568;
+    }
+    .info-box li {
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔐 Exemplo Prático - JWT</h1>
+
+    <div class="grid">
+      <!-- Card 1: Gerar Token -->
+      <div class="card">
+        <h2>1️⃣ Gerar Token</h2>
+        <form id="formGerar">
+          <div class="form-group">
+            <label for="usuario">Usuário:</label>
+            <input type="text" id="usuario" value="Bruno Silva" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" value="bruno@exemplo.com" required>
+          </div>
+          <button type="submit" class="btn-primary">Gerar Token JWT</button>
+        </form>
+        <div id="resultadoGerar" class="result" style="display: none;"></div>
+      </div>
+
+      <!-- Card 2: Validar Token -->
+      <div class="card">
+        <h2>2️⃣ Validar Token</h2>
+        <form id="formValidar">
+          <div class="form-group">
+            <label for="tokenValidar">Cole o Token JWT:</label>
+            <textarea id="tokenValidar" placeholder="eyJhbGciOiJIUzI1NiIs..."></textarea>
+          </div>
+          <button type="submit" class="btn-success">Validar Token</button>
+        </form>
+        <div id="resultadoValidar" class="result" style="display: none;"></div>
+      </div>
+
+      <!-- Card 3: Decodificar Token -->
+      <div class="card">
+        <h2>3️⃣ Decodificar Token (sem validar)</h2>
+        <form id="formDecodificar">
+          <div class="form-group">
+            <label for="tokenDecodificar">Cole o Token JWT:</label>
+            <textarea id="tokenDecodificar" placeholder="eyJhbGciOiJIUzI1NiIs..."></textarea>
+          </div>
+          <button type="submit" class="btn-info">Decodificar Token</button>
+        </form>
+        <div id="resultadoDecodificar" class="result" style="display: none;"></div>
+      </div>
+
+      <!-- Card 4: Demonstração de Ataque -->
+      <div class="card">
+        <h2>4️⃣ Demo: Ataque de Manipulação</h2>
+        <p style="color: #666; margin-bottom: 15px; font-size: 14px;">
+          Tente alterar o payload de um token válido e veja o que acontece:
+        </p>
+        <form id="formAtaque">
+          <div class="form-group">
+            <label for="tokenAtaque">Token Original:</label>
+            <textarea id="tokenAtaque" placeholder="Cole um token válido aqui"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="payloadModificado">Payload Modificado (Base64):</label>
+            <input type="text" id="payloadModificado" placeholder="eyJzdWIiOiIxMjM0NSIs...">
+          </div>
+          <button type="submit" class="btn-danger">Enviar Token Modificado</button>
+        </form>
+        <div id="resultadoAtaque" class="result" style="display: none;"></div>
+      </div>
+    </div>
+
+    <!-- Informações sobre JWT -->
+    <div class="info-box">
+      <h4>📚 Informações Importantes sobre JWT</h4>
+      <ul>
+        <li><strong>Header:</strong> Algoritmo e tipo do token (ex: { "alg": "HS256", "typ": "JWT" })</li>
+        <li><strong>Payload:</strong> Dados do usuário e metadados (claims)</li>
+        <li><strong>Signature:</strong> Assinatura digital para garantir integridade</li>
+        <li><strong>NUNCA</strong> armazene dados sensíveis no payload (é Base64, não criptografado)</li>
+        <li><strong>SEMPRE</strong> valide o token no servidor antes de autorizar acesso</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    // Função para formatar JSON
+    function formatJSON(obj) {
+      return JSON.stringify(obj, null, 2);
+    }
+
+    // Função para copiar token
+    function copiarToken(token) {
+      navigator.clipboard.writeText(token).then(() => {
+        alert('Token copiado para a área de transferência!');
+      }).catch(err => {
+        console.error('Erro ao copiar:', err);
+      });
+    }
+
+    // Gerar Token
+    document.getElementById('formGerar').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const usuario = document.getElementById('usuario').value;
+      const email = document.getElementById('email').value;
+
+      try {
+        const response = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ usuario, email })
+        });
+
+        const data = await response.json();
+        const resultadoDiv = document.getElementById('resultadoGerar');
+
+        if (response.ok) {
+          resultadoDiv.className = 'result success';
+          resultadoDiv.innerHTML = `
+            <h3>✅ Token Gerado!</h3>
+            <div class="token-display">${data.token}</div>
+            <button type="button" class="btn-copiar" onclick="copiarToken('${data.token}')">Copiar Token</button>
+            <h4>Payload Decodificado:</h4>
+            <pre>${formatJSON(data.payload)}</pre>
+          `;
+        } else {
+          resultadoDiv.className = 'result error';
+          resultadoDiv.innerHTML = `<h3>❌ Erro</h3><pre>${formatJSON(data)}</pre>`;
+        }
+        resultadoDiv.style.display = 'block';
+      } catch (error) {
+        alert('Erro ao conectar com o servidor');
+      }
+    });
+
+    // Validar Token
+    document.getElementById('formValidar').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const token = document.getElementById('tokenValidar').value;
+
+      try {
+        const response = await fetch('/api/validar', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token })
+        });
+
+        const data = await response.json();
+        const resultadoDiv = document.getElementById('resultadoValidar');
+
+        if (response.ok && data.valido) {
+          resultadoDiv.className = 'result success';
+          resultadoDiv.innerHTML = `
+            <h3>✅ Token Válido!</h3>
+            <pre>${formatJSON(data.payload)}</pre>
+          `;
+        } else {
+          resultadoDiv.className = 'result error';
+          resultadoDiv.innerHTML = `
+            <h3>❌ Token Inválido!</h3>
+            <p><strong>Erro:</strong> ${data.erro}</p>
+            <p>${data.mensagem}</p>
+          `;
+        }
+        resultadoDiv.style.display = 'block';
+      } catch (error) {
+        alert('Erro ao conectar com o servidor');
+      }
+    });
+
+    // Decodificar Token
+    document.getElementById('formDecodificar').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const token = document.getElementById('tokenDecodificar').value;
+
+      try {
+        const response = await fetch('/api/decodificar', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token })
+        });
+
+        const data = await response.json();
+        const resultadoDiv = document.getElementById('resultadoDecodificar');
+
+        if (response.ok) {
+          resultadoDiv.className = 'result success';
+          resultadoDiv.innerHTML = `
+            <h3>📋 Token Decodificado</h3>
+            <p><strong>Header:</strong></p>
+            <pre>${formatJSON(data.header)}</pre>
+            <p><strong>Payload:</strong></p>
+            <pre>${formatJSON(data.payload)}</pre>
+            <p><strong>Signature:</strong></p>
+            <pre>${data.signature}</pre>
+          `;
+        } else {
+          resultadoDiv.className = 'result error';
+          resultadoDiv.innerHTML = `<h3>❌ Erro</h3><pre>${formatJSON(data)}</pre>`;
+        }
+        resultadoDiv.style.display = 'block';
+      } catch (error) {
+        alert('Erro ao conectar com o servidor');
+      }
+    });
+
+    // Demonstraçãoo de Ataque
+    document.getElementById('formAtaque').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const tokenOriginal = document.getElementById('tokenAtaque').value;
+      const payloadModificado = document.getElementById('payloadModificado').value;
+
+      if (!payloadModificado) {
+        alert('Digite um payload modificado');
+        return;
+      }
+
+      // Criar token com payload modificado (quebrando a assinatura)
+      const partes = tokenOriginal.split('.');
+      const tokenModificado = partes[0] + '.' + payloadModificado + '.' + partes[2];
+
+      try {
+        const response = await fetch('/api/validar', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token: tokenModificado })
+        });
+
+        const data = await response.json();
+        const resultadoDiv = document.getElementById('resultadoAtaque');
+
+        resultadoDiv.className = 'result error';
+        resultadoDiv.innerHTML = `
+          <h3>🛡️ Ataque Detectado!</h3>
+          <p><strong>Token Original:</strong></p>
+          <div class="token-display">${tokenOriginal}</div>
+          <p><strong>Token Modificado:</strong></p>
+          <div class="token-display">${tokenModificado}</div>
+          <p><strong>Resultado:</strong></p>
+          <pre>${formatJSON(data)}</pre>
+          <p class="alerta-aviso">
+            <strong>⚠️ A assinatura não corresponde ao payload modificado!</strong><br>
+            O servidor rejeitou o token porque a assinatura é inválida.
+          </p>
+        `;
+        resultadoDiv.style.display = 'block';
+      } catch (error) {
+        alert('Erro ao conectar com o servidor');
+      }
+    });
+  </script>
+</body>
+</html>
