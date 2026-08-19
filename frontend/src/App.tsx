@@ -147,7 +147,7 @@ function App() {
           </p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 max-w-5xl mx-auto">
+        <div className="grid gap-6 md:grid-cols-3 max-w-7xl mx-auto">
           {/* Card 1: Gerar Token */}
           <Card>
             <CardHeader>
@@ -345,7 +345,7 @@ function App() {
           </Card>
 
           {/* Card 4: Demo de Ataque */}
-          <Card>
+          <Card className="md:col-span-3">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
                 <ShieldAlert className="h-5 w-5 text-orange-500" />
@@ -409,7 +409,7 @@ function App() {
           </Card>
 
           {/* Card 5: Validacao Vulneravel */}
-          <Card className="md:col-span-2 border-destructive/50">
+          <Card className="md:col-span-3 border-destructive/50">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
                 <Bug className="h-5 w-5 text-destructive" />
