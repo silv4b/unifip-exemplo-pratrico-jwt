@@ -212,7 +212,7 @@ function App() {
                     <span className="font-medium">Token gerado com sucesso</span>
                   </div>
                   <div className="relative group">
-                    <code className="block p-4 bg-muted text-xs rounded-lg break-all font-mono text-muted-foreground min-h-[120px]">
+                    <code className="block p-4 bg-muted text-xs rounded-lg break-all font-mono text-muted-foreground max-h-40 overflow-y-auto">
                       {tokenGerado}
                     </code>
                     <Button
@@ -226,7 +226,7 @@ function App() {
                   </div>
                   <div className="space-y-2">
                     <p className="text-sm font-medium text-muted-foreground">Payload:</p>
-                    <pre className="p-4 bg-muted text-xs rounded-lg overflow-x-auto font-mono text-muted-foreground min-h-[140px]">
+                    <pre className="p-4 bg-muted text-xs rounded-lg overflow-auto font-mono text-muted-foreground max-h-48">
                       {JSON.stringify(payloadGerado, null, 2)}
                     </pre>
                   </div>
@@ -252,7 +252,7 @@ function App() {
                   value={tokenValidar}
                   onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setTokenValidar(e.target.value)}
                   placeholder="eyJhbGciOiJIUzI1NiIs..."
-                  className="font-mono text-xs h-32 resize-none"
+                  className="font-mono text-xs h-24 md:h-32 resize-none"
                 />
               </div>
               <Button onClick={validarToken} className="w-full" variant="outline">
@@ -302,7 +302,7 @@ function App() {
                   value={tokenDecodificar}
                   onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setTokenDecodificar(e.target.value)}
                   placeholder="eyJhbGciOiJIUzI1NiIs..."
-                  className="font-mono text-xs h-32 resize-none"
+                  className="font-mono text-xs h-24 md:h-32 resize-none"
                 />
               </div>
               <Button onClick={decodificarToken} className="w-full" variant="outline">
@@ -361,7 +361,7 @@ function App() {
                   value={tokenAtaque}
                   onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setTokenAtaque(e.target.value)}
                   placeholder="Cole um token valido"
-                  className="font-mono text-xs h-32 resize-none"
+                  className="font-mono text-xs h-24 md:h-32 resize-none"
                 />
               </div>
               <div className="space-y-2">
@@ -387,13 +387,13 @@ function App() {
                   <div className="grid grid-cols-2 gap-2">
                     <div className="space-y-1">
                       <p className="text-xs font-medium text-muted-foreground">Original</p>
-                      <code className="block p-3 bg-muted text-[10px] rounded break-all font-mono text-muted-foreground min-h-[80px]">
+                       <code className="block p-3 bg-muted text-[10px] rounded break-all font-mono text-muted-foreground max-h-24 overflow-y-auto">
                         {resultadoAtaque.tokenOriginal}
                       </code>
                     </div>
                     <div className="space-y-1">
                       <p className="text-xs font-medium text-destructive">Modificado</p>
-                      <code className="block p-3 bg-destructive/10 text-[10px] rounded break-all font-mono text-destructive min-h-[80px]">
+                       <code className="block p-3 bg-destructive/10 text-[10px] rounded break-all font-mono text-destructive max-h-24 overflow-y-auto">
                         {resultadoAtaque.tokenModificado}
                       </code>
                     </div>
@@ -476,7 +476,7 @@ function App() {
                           <p className="text-xs font-medium text-destructive uppercase tracking-wide">
                             Payload Aceito
                           </p>
-                          <pre className="p-4 bg-muted text-xs rounded-lg overflow-x-auto font-mono text-muted-foreground min-h-[120px]">
+                           <pre className="p-4 bg-muted text-xs rounded-lg overflow-auto font-mono text-muted-foreground max-h-48">
                             {JSON.stringify(resultadoVulneravel.payload, null, 2)}
                           </pre>
                         </div>
@@ -484,7 +484,7 @@ function App() {
                           <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
                             Token Enviado
                           </p>
-                          <code className="block p-3 bg-muted text-[10px] rounded-lg break-all font-mono text-muted-foreground min-h-[80px]">
+                           <code className="block p-3 bg-muted text-[10px] rounded-lg break-all font-mono text-muted-foreground max-h-24 overflow-y-auto">
                             {resultadoVulneravel.tokenModificado}
                           </code>
                         </div>
